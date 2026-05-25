@@ -30,7 +30,7 @@
 #    levels(1,1) = 1., 
 #   filename(1) = 'diag_4Bia',
 #
-   frequency(1) = 86400.0,
+   frequency(1) = 3600.0,
    timePhase(1) = 0.0,
    fields(1,1) = 'THETA   ',
                  'SALT    ',
@@ -41,7 +41,7 @@
                  'DRHODR  ',
    filename(1) = 'diag_state',
 #
-    frequency(2) = 86400.0,
+    frequency(2) = 3600.0,
     fields(1,2) = 'ETAN    ',
 #                  'PHIBOT  ',
 #                  'TFLUX   ',
