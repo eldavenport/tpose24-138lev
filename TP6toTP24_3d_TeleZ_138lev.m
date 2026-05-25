@@ -1,5 +1,5 @@
 clear all
-addpath ~/
+addpath /home/mmazloff/ANALYSIS 
 
 dobcs = 1;
 
@@ -109,6 +109,7 @@ for iini = 1:4
   for ix = 1:nx
     for iy = 1:ny
       prof = double(tmp1(ix,iy,KI_interp_tp6));
+      prof = prof(:);
       mask = prof == 0;
       if all(mask)
         tmp2(ix,iy,KI_interp_out) = 0;
@@ -174,7 +175,7 @@ end
     tmp(:,i)       = tmp(:,nobcs+1);
     tmp(:,end-i+1) = tmp(:,end-nobcs);
   end
-  fid = fopen(['/data/SO3/edavenport/tpose24/setup/setup/Bathy_frmTP6_EMv1.bin'],'w','b');
+  fid = fopen(['/data/SO3/edavenport/tpose24/setup/Bathy_frmTP6_EMv1.bin'],'w','b');
   fwrite(fid,tmp,'single');
   fclose(fid);
 
@@ -245,6 +246,7 @@ for iobcs = 1:4
         for ix = 1:tnx
           for iy = 1:tny
             prof = double(tmp1(ix,iy,KI_interp_tp6));
+            prof = prof(:);
             mask = prof == 0;
             if all(mask)
               tmp2(ix,iy,KI_interp_out) = 0;
