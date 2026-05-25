@@ -1,0 +1,36 @@
+#!/bin/sh
+## ------------------------------------------------------------------------------
+## need to copy data files for running into desired run folder
+## -j oe combines output (o) and error (e) into one file (default behavior separates them)
+
+#PBS -m abe
+#PBS -M edavenport@ucar.edu
+#PBS -A <PROJECTID>
+#PBS -N tpose24
+#PBS -j oe
+#PBS -q main
+#PBS -l walltime=02:30:00
+#PBS -l select=1:ncpus=128:mpiprocs=128
+
+## load modules (compiler, MPI, etc.)
+module --force  purge 
+module load ncarenv/23.09 intel/2023.2.1 intel-mpi/2021.10.0
+module list
+
+cd /glade/derecho/scratch/edavenport/assim/tpose24/run/
+cp /glade/derecho/scratch/edavenport/assim/tpose24/input/* .
+cp /glade/derecho/scratch/edavenport/assim/tpose24/build/mitgcmuv .
+ln -s /glade/work/edavenport/EQUATORMIX/Bathy* .
+ln -s /glade/work/edavenport/EQUATORMIX/boundary_conditions/*Vel* .
+ln -s /glade/work/edavenport/EQUATORMIX/initial_conditions/*Vel* .
+ln -s /glade/work/edavenport/EQUATORMIX/forcing/* .
+
+rm STD*
+rm output*
+rm costfinal
+rm -r PROF
+rm *equi*
+
+mpirun -n 128 ./mitgcmuv > output.txt
+
+rm w2*
