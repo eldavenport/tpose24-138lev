@@ -130,8 +130,7 @@
   100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,
   100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,
   100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,
-  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,  100.0,
-  100.0,  100.0,
+  100.0,  100.0,  100.0,  100.0,
  xgOrigin = 209.3333,
  ygOrigin = -5.5,
  /
@@ -139,10 +138,10 @@
 # Input datasets
  &PARM05
   bathyFile='Bathy_frmTP6_EMv1.bin',
-  hydrogThetaFile='Tini_frmTP6Vel_EMv2te.bin',
-  hydrogSaltFile ='Sini_frmTP6Vel_EMv2te.bin',
+  hydrogThetaFile='Tini_frmTP6Vel_EMv1te.bin',
+  hydrogSaltFile ='Sini_frmTP6Vel_EMv1te.bin',
 #  mdsioLocalDir ='OUTPUT',
-  uVelInitFile   ='Uini_frmTP6Vel_EMv2te.bin',
-  vVelInitFile   ='Vini_frmTP6Vel_EMv2te.bin',
-  pSurfInitFile  ='ETAini_frmTP6Vel_EMv2.bin',
+  uVelInitFile   ='Uini_frmTP6Vel_EMv1te.bin',
+  vVelInitFile   ='Vini_frmTP6Vel_EMv1te.bin',
+  pSurfInitFile  ='ETAini_frmTP6Vel_EMv1.bin',
  /
