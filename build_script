@@ -1,0 +1,13 @@
+#!/bin/bash
+
+module purge
+module load ncarenv/23.09 intel/2023.2.1 intel-mpi/2021.10.0 netcdf
+
+rm -f *.o
+rm -f *.f
+make CLEAN
+rm Makefile
+
+/glade/work/edavenport/MITgcm/tools/genmake2 -mods ../code_fwd -mpi -of /glade/u/home/edavenport/derecho_opt_apr25 -rootdir=/glade/work/edavenport/MITgcm 
+make depend
+make -j 2

@@ -1,0 +1,60 @@
+
+# ***************
+# Open boundaries
+# ***************
+ &OBCS_PARM01
+ OB_Jnorth=   512*384,
+ OB_Jsouth=   512*1,
+ OB_Iwest=    384*1,
+ OB_Ieast=    384*512,
+#
+ useOBCSsponge=.TRUE.,
+ useLinearSponge    =.TRUE.,
+ OBCSsponge_Salt=.FALSE.,
+ OBCSsponge_Theta=.FALSE.,
+ useOBCSbalance=.TRUE.,
+ useOBCSprescribe=.TRUE.,
+#
+ OBNuFile='Uobcn_frmTP6_EMv1te_TPVel.bin',
+ OBNvFile='Vobcn_frmTP6_EMv1te_TPVel.bin',
+ OBNtFile='Tobcn_frmTP6_EMv1te_TPVel.bin',
+ OBNsFile='Sobcn_frmTP6_EMv1te_TPVel.bin',
+# OBNetaFile='Pobcs_frmTP6_EMv1.bin',
+#
+ OBSuFile='Uobcs_frmTP6_EMv1te_TPVel.bin',
+ OBSvFile='Vobcs_frmTP6_EMv1te_TPVel.bin',
+ OBStFile='Tobcs_frmTP6_EMv1te_TPVel.bin',
+ OBSsFile='Sobcs_frmTP6_EMv1te_TPVel.bin',
+# OBSetaFile='Pobcs_frmTP6_EMv1.bin',
+#
+ OBWuFile='Uobcw_frmTP6_EMv1te_TPVel.bin',
+ OBWvFile='Vobcw_frmTP6_EMv1te_TPVel.bin',
+ OBWtFile='Tobcw_frmTP6_EMv1te_TPVel.bin',
+ OBWsFile='Sobcw_frmTP6_EMv1te_TPVel.bin',
+# OBWetaFile='Pobcw_frmTP6_EMv1.bin',
+#
+ OBEuFile='Uobce_frmTP6_EMv1te_TPVel.bin',
+ OBEvFile='Vobce_frmTP6_EMv1te_TPVel.bin',
+ OBEtFile='Tobce_frmTP6_EMv1te_TPVel.bin',
+ OBEsFile='Sobce_frmTP6_EMv1te_TPVel.bin',
+# OBEetaFile='Pobce_frmTP6_EMv1.bin',
+#
+ /
+# *****************************************
+# Orlanski Boundary Condition Parameters.
+# *****************************************
+ &OBCS_PARM02
+# cvelTimeScale = 2000.,
+ /
+
+# *****************************************
+# Sponge Layer Parameters.
+# *****************************************
+ &OBCS_PARM03
+ Urelaxobcsinner=864000.E0,
+ Urelaxobcsbound=43200.E0,
+ Vrelaxobcsinner=864000.E0,
+ Vrelaxobcsbound=43200.E0,
+ spongeThickness=8,
+ /
+

@@ -1,0 +1,27 @@
+#
+#
+# ******************
+# PROFILES cost f',tion
+# ******************
+ &PROFILES_NML
+#CMM
+#CMM
+ profilesDir = 'PROF',
+ profilesfiles(1)  = 'FCTD_1min',
+ profilesfiles(2)  = 'fastCTD_prof',
+ profilesfiles(3)  = 'USGO_TP_2012_PFL_D_w',
+ profilesfiles(4)  = 'USGO_TP_2012_PFL_D_w_TPOSE',
+ profilesfiles(5)  = 'ADCP_prof_50',
+ profilesfiles(6)  = 'ADCP_prof_140',
+ prof_names(5,3) = 'prof_U',
+ prof_names(5,4) = 'prof_V',
+ prof_names(6,3) = 'prof_U',
+ prof_names(6,4) = 'prof_V',
+ prof_namesmod(5,3) = 'UE',
+ prof_namesmod(5,4) = 'VN',
+ prof_namesmod(6,3) = 'UE',
+ prof_namesmod(6,4) = 'VN',
+#
+#
+/
+
