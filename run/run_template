@@ -20,6 +20,7 @@ module list
 cd /glade/derecho/scratch/edavenport/assim/tpose24/run/
 cp /glade/derecho/scratch/edavenport/assim/tpose24/input/* .
 cp /glade/derecho/scratch/edavenport/assim/tpose24/build/mitgcmuv .
+ln -s /glade/derecho/scratch/edavenport/assim/tpose24/profiles/* .
 ln -s /glade/work/edavenport/EQUATORMIX/Bathy* .
 ln -s /glade/work/edavenport/EQUATORMIX/boundary_conditions/*Vel* .
 ln -s /glade/work/edavenport/EQUATORMIX/initial_conditions/*Vel* .
@@ -30,6 +31,8 @@ rm output*
 rm costfinal
 rm -r PROF
 rm *equi*
+
+cp data.diagnostics_hourly data.diagnostics
 
 mpirun -n 128 ./mitgcmuv > output.txt
 
