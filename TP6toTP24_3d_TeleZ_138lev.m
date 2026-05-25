@@ -1,5 +1,5 @@
 clear all
-addpath ~/ANALYSIS
+addpath ~/
 
 dobcs = 1;
 
@@ -73,13 +73,13 @@ zc_src = RC_tp6(KI_interp_tp6);
 %NOW GET TSUV
 for iini = 1:4
   switch iini
-    case 1; ivar = 'THETA'; bstr = 'Tini_frmTP6_EMv1te.bin';
+    case 1; ivar = 'THETA'; bstr = 'Tini_frmTP6Vel_EMv1te.bin';
 	   Q = rdmds('/data/SO3/edavenport/tpose6/sep2012/run_iter14/diag_state',72*30,'rec',1);
-    case 2; ivar = 'SALT'; bstr = 'Sini_frmTP6_EMv1te.bin';
+    case 2; ivar = 'SALT'; bstr = 'Sini_frmTP6Vel_EMv1te.bin';
            Q = rdmds('/data/SO3/edavenport/tpose6/sep2012/run_iter14/diag_state',72*30,'rec',2);
-    case 3; ivar = 'UVEL'; bstr = 'Uini_frmTP6_EMv1te.bin';
+    case 3; ivar = 'UVEL'; bstr = 'Uini_frmTP6Vel_EMv1te.bin';
            Q = rdmds('/data/SO3/edavenport/tpose6/sep2012/run_iter14/diag_state',72*30,'rec',3);
-    case 4; ivar = 'VVEL'; bstr = 'Vini_frmTP6_EMv1te.bin';
+    case 4; ivar = 'VVEL'; bstr = 'Vini_frmTP6Vel_EMv1te.bin';
            Q = rdmds('/data/SO3/edavenport/tpose6/sep2012/run_iter14/diag_state',72*30,'rec',4);
   end
 
