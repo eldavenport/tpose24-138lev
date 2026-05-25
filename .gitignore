@@ -3,3 +3,5 @@
 build/
 **.bin
 run/run_fwd
+run_dir/
+run/*.o*
