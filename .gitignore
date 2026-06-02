@@ -5,3 +5,4 @@ build/
 run/run_fwd
 run_dir/
 run/*.o*
+**oct2012*
