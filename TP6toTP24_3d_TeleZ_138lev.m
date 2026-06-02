@@ -8,37 +8,34 @@ load /data/SO6/TPOSE/tpose6/grid_6/grid  XC YC XG YG hFacC DRF RC Depth
 XC = XC(:,1); YC = YC(1,:);
 x1 = 210; x2 = 230; %E
 y1 = -5;  y2 = 10;
-DRFem(1:2:2*nz) = DRF/2;
-DRFem(2:2:2*nz) = DRF/2;
-DRFem(end-1:end)=[];
-
 %FOR TELE - 138 LEVEL VERSION
 %
 % Vertical grid structure:
 %
-%   Levels 1-86:   TP6 levels 1-43 halved via DRFem (0-500m)    -- UNCHANGED
-%   Levels 87-98:  TP6 levels 44-55 direct copy (500-1500m)     -- UNCHANGED
-%   Levels 99-138: 40 x 100m boxes (1500-5500m)                 -- NEW
+%   Levels 1-86:   TP6 levels 1-43 halved (0-500m)
+%   Levels 87-98:  TP6 levels 44-55 (500-1500m)
+%   Levels 99-138: 40 x 100m boxes (1500-5500m)
 %
-% Original levels 99-108 were: 200/300/300/300/400/500x5m (10 levels, 1500-5500m)
-% Replaced with 40 x 100m boxes covering the same total depth (1500-5500m).
-% New levels 99-138 are vertically interpolated from TP6 levels 55-66
-%   (centers 1450-5750m), which safely brackets all new target depths (1550-5450m).
+% All levels interpolated via interp1 onto zc_tp24 (actual level center depths).
 
 NZ_NEW = 138;
-
-KI1  = 1:86;    % shallow doubled zone (unchanged)
-KI2i = 44:55;   % TP6 levels for direct-copy zone (levels 87-98, unchanged)
-
-% TP6 source levels for interpolating new levels 99-138
-KI_interp_tp6 = 55:66;   % TP6 levels 55-66, centers 1450-5750m
-KI_interp_out = 99:138;  % output levels 99-138, 100m boxes 1500-5500m
 
 % TP6 level center depths (positive downward)
 RC_tp6 = -RC;
 
 % Center depths of new levels 99-138 (100m boxes, centers at 1550,1650,...,5450m)
 zc_interp_out = 1550:100:5450;   % 40 values
+
+% Center depths of all 138 TPOSE24 levels (positive downward, m)
+zc_tp24 = zeros(1, NZ_NEW);
+for k = 1:43
+    zc_tp24(2*k-1) = RC_tp6(k) - DRF(k)/4;
+    zc_tp24(2*k)   = RC_tp6(k) + DRF(k)/4;
+end
+for k = 1:12
+    zc_tp24(86+k) = RC_tp6(43+k);
+end
+zc_tp24(99:138) = zc_interp_out;
 
 % Sanity check
 fprintf('New grid: %d levels\n', NZ_NEW);
@@ -67,9 +64,6 @@ yc = ygOrigin+1/48:1/24:ygFin;
 %ADD OBCS width
 nobcs = 8;
 
-% TP6 source level centers for interp1
-zc_src = RC_tp6(KI_interp_tp6);
-
 %NOW GET TSUV
 for iini = 1:4
   switch iini
@@ -90,37 +84,19 @@ for iini = 1:4
     tmp1(:,:,k) = interp2(YC,XC,Q(:,:,k),yc,xc);
   end
 
-  % Step 2: vertical mapping onto 138-level grid
-  tmp2 = zeros(nx,ny,NZ_NEW,'single');
-
-  % Levels 1-86: double TP6 levels 1-43 (unchanged)
-  for k = 1:43
-    tmp2(:,:,k*2-1) = tmp1(:,:,k);
-    tmp2(:,:,k*2)   = tmp1(:,:,k);
-  end
-
-  % Levels 87-98: direct copy of TP6 levels 44-55 (unchanged)
-  for k = 1:length(KI2i)
-    tmp2(:,:,86+k) = tmp1(:,:,KI2i(k));
-  end
-
-  % Levels 99-138: vertical interpolation from TP6 levels 55-66
+  % Step 2: vertical interpolation onto 138-level grid
   tmp1(isnan(tmp1)) = 0;
+  tmp2 = zeros(nx,ny,NZ_NEW,'single');
   for ix = 1:nx
     for iy = 1:ny
-      prof = double(tmp1(ix,iy,KI_interp_tp6));
+      prof = double(tmp1(ix,iy,:));
       prof = prof(:);
       mask = prof == 0;
-      if all(mask)
-        tmp2(ix,iy,KI_interp_out) = 0;
-      else
-        if any(mask)
-          prof(mask) = interp1(zc_src(~mask), prof(~mask), ...
-                               zc_src(mask), 'linear', 'extrap');
-        end
-        tmp2(ix,iy,KI_interp_out) = single(interp1(zc_src, prof, ...
-                                            zc_interp_out, 'linear', 'extrap'));
+      if all(mask); continue; end
+      if any(mask)
+        prof(mask) = interp1(RC_tp6(~mask), prof(~mask), RC_tp6(mask), 'linear', 'extrap');
       end
+      tmp2(ix,iy,:) = single(interp1(RC_tp6, prof, zc_tp24, 'linear', 'extrap'));
     end
   end
 
@@ -188,10 +164,10 @@ end
 if dobcs  %AND MAKE OBCS
 for iobcs = 1:4
   switch iobcs
-    case 1; ivar = 'obcn'; i = 1:nx; j = ny-nobcs;
+    case 1; ivar = 'obcn'; i = 1:nx; j = ny;
     case 2; ivar = 'obcs'; i = 1:nx; j = 1;
-    case 3; ivar = 'obcw'; i = nx-nobcs; j = 1:ny;
-    case 4; ivar = 'obce'; i = 1; j = 1:ny;
+    case 3; ivar = 'obcw'; i = 1;  j = 1:ny;   % west face: xc(1) = western boundary
+    case 4; ivar = 'obce'; i = nx; j = 1:ny;   % east face: xc(nx) = eastern boundary
   end
   fidT = fopen(['/data/SO3/edavenport/tpose24/setup/T' ivar '_frmTP6Vel_EMv1te.bin'],'w','b');
   fidS = fopen(['/data/SO3/edavenport/tpose24/setup/S' ivar '_frmTP6Vel_EMv1te.bin'],'w','b');
@@ -230,34 +206,18 @@ for iobcs = 1:4
           tmp1(:,:,k) = interp2(YC,XC,Q(:,:,k),yc(j),xc(i));
         end
 
-        % Levels 1-86: double TP6 1-43
-        for k = 1:43
-          tmp2(:,:,k*2-1) = tmp1(:,:,k);
-          tmp2(:,:,k*2)   = tmp1(:,:,k);
-        end
-
-        % Levels 87-98: direct copy TP6 44-55
-        for k = 1:length(KI2i)
-          tmp2(:,:,86+k) = tmp1(:,:,KI2i(k));
-        end
-
-        % Levels 99-138: vertical interpolation from TP6 55-66
+        % Vertical interpolation onto 138-level grid
         tmp1(isnan(tmp1)) = 0;
         for ix = 1:tnx
           for iy = 1:tny
-            prof = double(tmp1(ix,iy,KI_interp_tp6));
+            prof = double(tmp1(ix,iy,:));
             prof = prof(:);
             mask = prof == 0;
-            if all(mask)
-              tmp2(ix,iy,KI_interp_out) = 0;
-            else
-              if any(mask)
-                prof(mask) = interp1(zc_src(~mask), prof(~mask), ...
-                                     zc_src(mask), 'linear', 'extrap');
-              end
-              tmp2(ix,iy,KI_interp_out) = single(interp1(zc_src, prof, ...
-                                                  zc_interp_out, 'linear', 'extrap'));
+            if all(mask); continue; end
+            if any(mask)
+              prof(mask) = interp1(RC_tp6(~mask), prof(~mask), RC_tp6(mask), 'linear', 'extrap');
             end
+            tmp2(ix,iy,:) = single(interp1(RC_tp6, prof, zc_tp24, 'linear', 'extrap'));
           end
         end
 
