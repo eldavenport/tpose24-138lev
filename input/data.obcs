@@ -19,25 +19,25 @@
  OBNvFile='Vobcn_frmTP6Vel_EMv1te.bin',
  OBNtFile='Tobcn_frmTP6Vel_EMv1te.bin',
  OBNsFile='Sobcn_frmTP6Vel_EMv1te.bin',
-# OBNetaFile='Pobcs_frmTP6_EMv1.bin',
+ OBNetaFile='Etaobcs_frmTP6Vel_EMv1.bin',
 #
  OBSuFile='Uobcs_frmTP6Vel_EMv1te.bin',
  OBSvFile='Vobcs_frmTP6Vel_EMv1te.bin',
  OBStFile='Tobcs_frmTP6Vel_EMv1te.bin',
  OBSsFile='Sobcs_frmTP6Vel_EMv1te.bin',
-# OBSetaFile='Pobcs_frmTP6_EMv1.bin',
+ OBSetaFile='Etaobcs_frmTP6Vel_EMv1.bin',
 #
  OBWuFile='Uobcw_frmTP6Vel_EMv1te.bin',
  OBWvFile='Vobcw_frmTP6Vel_EMv1te.bin',
  OBWtFile='Tobcw_frmTP6Vel_EMv1te.bin',
  OBWsFile='Sobcw_frmTP6Vel_EMv1te.bin',
-# OBWetaFile='Pobcw_frmTP6_EMv1.bin',
+ OBWetaFile='Etaobcw_frmTP6Vel_EMv1.bin',
 #
  OBEuFile='Uobce_frmTP6Vel_EMv1te.bin',
  OBEvFile='Vobce_frmTP6Vel_EMv1te.bin',
  OBEtFile='Tobce_frmTP6Vel_EMv1te.bin',
  OBEsFile='Sobce_frmTP6Vel_EMv1te.bin',
-# OBEetaFile='Pobce_frmTP6_EMv1.bin',
+ OBEetaFile='Etaobce_frmTP6Vel_EMv1.bin',
 #
  /
 # *****************************************
